@@ -19,14 +19,14 @@ import com.example.eventmanagementsystem.repository.UserRepository;
 public class RegistrationService {
 
 	 private final RegistrationRepository registrationRepository;
-	    private final JavaMailSender mailSender;
+	  
 	    private final UserRepository userRepository;
 	    private final EventRepository eventRepository;
 
 	    public RegistrationService(RegistrationRepository registrationRepository,
-	                             EventRepository eventRepository,JavaMailSender mailSender,UserRepository userRepository) {
+	                             EventRepository eventRepository,UserRepository userRepository) {
 	        this.registrationRepository = registrationRepository;
-	        this.mailSender = mailSender;
+	    
 	        this.userRepository=userRepository;
 	        this.eventRepository=eventRepository;
 	    }
@@ -91,17 +91,6 @@ public class RegistrationService {
 	        registration.setAttended(false);
 
 	        registration = registrationRepository.save(registration);
-
-	        // 5. Send confirmation email
-	        SimpleMailMessage msg = new SimpleMailMessage();
-	        msg.setTo(user.getEmail());
-	        msg.setSubject("Registration Confirmed: " + event.getName());
-	        msg.setText("Dear " + user.getUsername() + ",\n\n" +
-	                "You have successfully registered for the event: " + event.getName() + "\n" +
-	                "Date & Time: " + event.getDateTime().toString() + "\n" +
-	                "Venue: " + event.getVenue() + "\n\n" +
-	                "Thank you,\nEvent Management Team");
-	        mailSender.send(msg);
 
 	        return registration;
 	    }
