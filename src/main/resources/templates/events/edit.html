@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8" />
+    <title th:text="'Edit Event: ' + ${event.name}">Edit Event</title>
+    <link rel="stylesheet" th:href="@{/css/styles.css}" />
+</head>
+<body>
+
+<h1>Edit Event</h1>
+
+<form th:action="@{/events/edit/{id}(id=${event.id})}" th:object="${event}" method="post" th:method="put">
+    <input type="hidden" th:field="*{id}" />
+
+    <div>
+        <label for="name">Name</label>
+        <input type="text" id="name" th:field="*{name}" />
+    </div>
+
+    <div>
+        <label for="description">Description</label>
+        <textarea id="description" th:field="*{description}"></textarea>
+    </div>
+
+    <div>
+        <label for="dateTime">Date & Time</label>
+        <input type="datetime-local" id="dateTime" th:field="*{dateTime}" />
+    </div>
+
+    <div>
+        <label for="venue">Venue</label>
+        <input type="text" id="venue" th:field="*{venue}" />
+    </div>
+
+    <div>
+        <label for="category">Category</label>
+        <input type="text" id="category" th:field="*{category}" />
+    </div>
+
+    <div>
+        <label for="speakerIds">Speakers (IDs comma separated)</label>
+        <input type="text" id="speakerIds" th:field="*{speakerIds}" />
+        <small>Enter speaker IDs separated by comma</small>
+    </div>
+
+    <div>
+        <button type="submit">Save Changes</button>
+        <a th:href="@{/events}">Cancel</a>
+    </div>
+</form>
+
+</body>
+</html>

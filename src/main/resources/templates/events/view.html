@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <title th:text="'Event: ' + ${event.name}">Event Details</title>
+  <link rel="stylesheet" th:href="@{/css/styles.css}" />
+</head>
+<body>
+
+  <div>
+    <h1 th:text="${event.name}">Event Name</h1>
+    <p><strong>Date:</strong>
+    <span th:text="${#temporals.format(event.dateTime, 'dd MMM yyyy HH:mm')}">Event Date Time</span></p>
+    <p><strong>Venue:</strong> <span th:text="${event.venue}">Venue Name</span></p>
+    <p><strong>Category:</strong> <span th:text="${event.category}">Category</span></p>
+    <p><strong>Description:</strong></p>
+    <p th:text="${event.description}">Event Description goes here.</p>
+    <p><strong>Speakers:</strong></p>
+    <ul>
+      <li th:each="sid : ${event.speakerIds}" th:text="${sid}">Speaker Id</li>
+    </ul>
+    <hr/>
+
+    <div th:if="${isRegistered}">
+      <p>You are already registered for this event.</p>
+    </div>
+    <div th:unless="${isRegistered}">
+      <form th:action="@{/events/register/{id}(id=${event.id})}" method="post">
+        <button type="submit">Register for this Event</button>
+      </form>
+    </div>
+
+    <a th:href="@{/events}">Back to Event List</a>
+  </div>
+
+</body>
+</html>

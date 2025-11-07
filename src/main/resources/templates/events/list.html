@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Events List</title>
+    <link rel="stylesheet" th:href="@{/css/bootstrap.min.css}" />
+</head>
+<body>
+<div class="container mt-4">
+    <h2>All Events</h2>
+    <table class="table table-striped">
+        <thead>
+        <tr>
+            <th>Name</th>
+            <th>Date & Time</th>
+            <th>Venue</th>
+            <th>Category</th>
+            <th>Actions</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="event : ${events}">
+            <td th:text="${event.name}">Event Name</td>
+            <td th:text="${event.dateTime}">2025-12-01T10:00</td>
+            <td th:text="${event.venue}">Venue</td>
+            <td th:text="${event.category}">Category</td>
+            <td>
+                <a th:href="@{|/events/view/${event.id}|}" class="btn btn-primary btn-sm">View</a>
+                <a th:href="@{|/events/register/${event.id}|}" class="btn btn-success btn-sm">Register</a>
+                <a th:href="@{/events/edit/{id}(id=${event.id})}">Edit Event</a>
+                <a th:href="@{/events/delete/{id}(id=${event.id})}">Delete Event</a>
+            </td>
+        </tr>
+        <tr th:if="${events.empty}">
+            <td colspan="5">No events available.</td>
+        </tr>
+        </tbody>
+    </table>
+</div>
+</body>
+</html>

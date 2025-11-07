@@ -1,0 +1,14 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Registration Confirmation</title>
+    <link rel="stylesheet" th:href="@{/css/bootstrap.min.css}" />
+</head>
+<body>
+<div class="container mt-4">
+    <h2>Registration Successful!</h2>
+    <p th:text="${message}">Thank you for registering. A confirmation email has been sent.</p>
+    <a href="/events" class="btn btn-primary">Back to Events</a>
+</div>
+</body>
+</html>

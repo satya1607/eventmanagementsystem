@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Create Event</title>
+    <link rel="stylesheet" th:href="@{/css/bootstrap.min.css}" />
+</head>
+<body>
+<div class="container mt-4">
+    <h2>Create New Event</h2>
+    <form th:action="@{/events/create}" th:object="${event}" method="post">
+        <div class="mb-3">
+            <label for="name" class="form-label">Event Name</label>
+            <input type="text" id="name" th:field="*{name}" class="form-control" required />
+        </div>
+        <div class="mb-3">
+            <label for="dateTime" class="form-label">Date & Time</label>
+            <input type="datetime-local" id="dateTime" th:field="*{dateTime}" class="form-control" required />
+        </div>
+        <div class="mb-3">
+            <label for="venue" class="form-label">Venue</label>
+            <input type="text" id="venue" th:field="*{venue}" class="form-control" required />
+        </div>
+        <div class="mb-3">
+            <label for="category" class="form-label">Category</label>
+            <input type="text" id="category" th:field="*{category}" class="form-control" required />
+        </div>
+        <div class="mb-3">
+            <label for="description" class="form-label">Description</label>
+            <textarea id="description" th:field="*{description}" class="form-control" rows="3"></textarea>
+        </div>
+        <div>
+        <label for="speakerIds">Speakers (IDs comma separated)</label>
+        <input type="text" id="speakerIds" class="form-control" th:field="*{speakerIds}" />
+        <small>Enter speaker IDs separated by comma</small>
+    </div>
+        <button type="submit" class="btn btn-primary">Create Event</button>
+        
+    </form>
+</div>
+</body>
+</html>

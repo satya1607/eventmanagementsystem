@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Admin - Speakers Management</title>
+    <link rel="stylesheet" th:href="@{/css/bootstrap.min.css}" />
+</head>
+<body>
+<div class="container mt-4">
+    <h2>Manage Speakers</h2>
+    <a th:href="@{/admin/speakers/create}" class="btn btn-success mb-3">Add Speaker</a>
+    <table class="table table-hover">
+        <thead>
+            <tr>
+                <th>Name</th>
+                <th>Biography</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr th:each="speaker : ${speakers}">
+                <td th:text="${speaker.name}">Speaker Name</td>
+                <td th:text="${speaker.bio}">Speaker Bio</td>
+                <td>
+                    <a th:href="@{|/admin/speakers/edit/${speaker.id}|}" class="btn btn-primary btn-sm">Edit</a>
+                    <a th:href="@{|/admin/speakers/delete/${speaker.id}|}" class="btn btn-danger btn-sm"
+                       onclick="return confirm('Delete this speaker?');">Delete</a>
+                </td>
+            </tr>
+            <tr th:if="${speakers.empty}">
+                <td colspan="3">No speakers added yet.</td>
+            </tr>
+        </tbody>
+    </table>
+</div>
+</body>
+</html>

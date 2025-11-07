@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>User Dashboard</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.0/dist/css/bootstrap.min.css" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.3/dist/umd/popper.min.js" integrity="sha384-eMNCOe7tC1doHpGoWe/6oMVemdAVTMs2xqW4mwXrXsW0L84Iytr2wi5v2QjrP/xp" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.0/dist/js/bootstrap.min.js" integrity="sha384-cn7l7gDp0eyniUwwAZgrzD06kc/tftFf19TOAs2zVinnD/C7E91j9yyk5//jjpt/" crossorigin="anonymous"></script>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <style>
+        /* Basic navbar styles */
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+        }
+.navbar {
+            display: flex;
+            justify-content: space-between; /* Space between left and right items */
+            align-items: center;
+              background-color: #333;
+            padding: 10px 20px;
+        }
+.navbar.brand {
+            color: white;
+            font-size: 24px;
+            text-decoration: none;
+        }
+.navbar.nav-links a {
+            color: white;
+            text-decoration: none;
+            margin-left: 15px;
+            font-size: 16px;
+        }
+.navbar.nav-links a:hover {
+            text-decoration: underline;
+        }
+        </style>
+</head>
+<body>
+
+<nav class="navbar">
+    <!-- Left Corner: Brand / Heading -->
+    <a href="/" class="brand">EventManagement</a>
+
+    <!-- Right Corner: Login & Signup -->
+    <div class="nav-links">
+        <!-- Using Thymeleaf 'th:href' to generate dynamic URLs -->
+        
+        <a th:href="@{/events/create}">Create Event</a>
+        
+        
+        <!-- <a th:href="@{/admin/events/attendance/{eventId}(eventId=${event.id})}">Track Attendance</a>-->
+         <a th:href="@{/admin/speakers/create}">Manage Speakers</a>
+        <a th:href="@{/login}">Login</a>
+        <a th:href="@{/register}">SignUp</a>
+    </div>
+</nav>
+
+
+
+</body>
+</html>

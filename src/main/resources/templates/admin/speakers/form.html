@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title th:text="${speaker.id} != null ? 'Edit Speaker' : 'Create Speaker'">Speaker Form</title>
+    <link rel="stylesheet" th:href="@{/css/bootstrap.min.css}" />
+</head>
+<body>
+<div class="container mt-4">
+    <h2 th:text="${speaker.id} != null ? 'Edit Speaker' : 'New Speaker'"></h2>
+    <form th:action="@{/admin/speakers/save}" th:object="${speaker}" method="post">
+        <input type="hidden" th:field="*{id}" />
+        <div class="mb-3">
+            <label for="name" class="form-label">Name</label>
+            <input type="text" th:field="*{name}" id="name" class="form-control" required />
+        </div>
+        <div class="mb-3">
+            <label for="bio" class="form-label">Biography</label>
+            <textarea th:field="*{bio}" id="bio" class="form-control" rows="4" required></textarea>
+        </div>
+        <button type="submit" class="btn btn-primary">Save</button>
+        <a th:href="@{/admin/speakers}" class="btn btn-secondary">Cancel</a>
+    </form>
+</div>
+</body>
+</html>

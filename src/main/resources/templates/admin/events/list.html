@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Admin - Events Management</title>
+    <link rel="stylesheet" th:href="@{/css/bootstrap.min.css}" />
+</head>
+<body>
+<div class="container mt-4">
+    <h2>Admin: Manage Events</h2>
+    <a th:href="@{/admin/events/create}" class="btn btn-success mb-3">Create New Event</a>
+    <table class="table table-bordered">
+        <thead>
+            <tr>
+                <th>Name</th>
+                <th>Date & Time</th>
+                <th>Venue</th>
+                <th>Category</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr th:each="event : ${events}">
+                <td th:text="${event.name}">Event Name</td>
+                <td th:text="${event.dateTime}">2025-12-01T10:00</td>
+                <td th:text="${event.venue}">Venue</td>
+                <td th:text="${event.category}">Category</td>
+                <td>
+                    <a th:href="@{|/admin/events/edit/${event.id}|}" class="btn btn-primary btn-sm">Edit</a>
+                    <a th:href="@{|/admin/events/delete/${event.id}|}" class="btn btn-danger btn-sm"
+                       onclick="return confirm('Are you sure you want to delete this event?');">Delete</a>
+                    <a th:href="@{|/admin/events/attendance/${event.id}|}" class="btn btn-info btn-sm">Attendance</a>
+                </td>
+            </tr>
+            <tr th:if="${events.empty}">
+                <td colspan="5">No events found.</td>
+            </tr>
+        </tbody>
+    </table>
+</div>
+</body>
+</html>

@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8"/>
+  <title>Search Events</title>
+  <link rel="stylesheet" th:href="@{/css/styles.css}" />
+</head>
+<body>
+  <h1>Search Events</h1>
+
+  <form th:action="@{/events/search/filter}" method="get">
+    <div>
+      <label for="venue">Venue:</label>
+      <input type="text" id="venue" name="venue" th:value="${venue}" placeholder="Enter venue"/>
+    </div>
+
+    <div>
+      <label for="category">Category:</label>
+      <input type="text" id="category" name="category" th:value="${category}" placeholder="Enter category"/>
+    </div>
+
+    <div>
+      <label for="start">Start Date & Time:</label>
+      <input type="datetime-local" id="start" name="start" th:value="${start}" />
+    </div>
+
+    <div>
+      <label for="end">End Date & Time:</label>
+      <input type="datetime-local" id="end" name="end" th:value="${end}" />
+    </div>
+
+    <div>
+      <button type="submit">Search</button>
+      <a th:href="@{/events}">Reset</a>
+    </div>
+  </form>
+
+  <h2>Results</h2>
+
+  <table>
+    <thead>
+      <tr>
+        <th>Name</th>
+        <th>Date & Time</th>
+        <th>Venue</th>
+        <th>Category</th>
+        <th>Details</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr th:each="event : ${events}">
+        <td th:text="${event.name}">Event Name</td>
+        <td th:text="${#temporals.format(event.dateTime, 'yyyy‑MM‑dd HH:mm')}">2025‑12‑01 10:00</td>
+        <td th:text="${event.venue}">Venue</td>
+        <td th:text="${event.category}">Category</td>
+        <td><a th:href="@{/events/view/{id}(id=${event.id})}">View</a></td>
+      </tr>
+      <tr th:if="${#lists.isEmpty(events)}">
+        <td colspan="5">No events found.</td>
+      </tr>
+    </tbody>
+  </table>
+
+</body>
+</html>
