@@ -51,9 +51,9 @@ public class RegistrationService {
 	    public List<Registration> getRegistrationsForUser(String userId) {
 	        return registrationRepository.findByUserId(userId);
 	    }
-	    public String getEventIdForRegistration(String registrationId) {
+	    public Event getEventIdForRegistration(String registrationId) {
 	        return registrationRepository.findById(registrationId)
-	                .map(Registration::getEventId)
+	                .map(Registration::getEvent)
 	                .orElseThrow(() -> new NoSuchElementException(
 	                        "No registration found with id: " + registrationId));
 	    }
@@ -85,10 +85,10 @@ public class RegistrationService {
 
 	        // 4. Create registration record
 	        Registration registration = new Registration();
-	        registration.setUserId(user.getId());
-	        registration.setEventId(eventId);
+	        registration.setUser(user);
+	        registration.setEvent(event);
 	        registration.setAttendanceTimestamp(LocalDateTime.now());
-	        registration.setAttended(false);
+	        registration.setAttended(true);
 
 	        registration = registrationRepository.save(registration);
 

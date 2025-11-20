@@ -1,6 +1,5 @@
 package com.example.eventmanagementsystem.controller;
 
-
 import com.example.eventmanagementsystem.entity.Registration;
 import com.example.eventmanagementsystem.service.RegistrationService;
 import org.junit.jupiter.api.BeforeEach;
@@ -23,7 +22,7 @@ import org.springframework.security.test.context.support.WithMockUser;
 
 @WebMvcTest(RegistrationController.class)
 @AutoConfigureMockMvc(addFilters = false)
-class RegistrationControllerTest {
+public class RegistrationControllerTest {
 
     @Autowired
     private MockMvc mockMvc;

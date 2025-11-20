@@ -105,7 +105,7 @@ public class EventControllerTest {
 	    void testViewEvent_WithAuthentication() throws Exception {
 	        Authentication authentication = Mockito.mock(Authentication.class);
 	        when(authentication.getName()).thenReturn("user@example.com");
-	        when(eventService.findById("1")).thenReturn(Optional.of(event1));
+	        when(eventService.findById("1")).thenReturn(event1);
 	        when(registrationService.isUserRegistered("user@example.com", "1")).thenReturn(true);
 
 	        mockMvc.perform(get("/events/view/1").principal(authentication))

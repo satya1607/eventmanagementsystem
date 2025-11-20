@@ -152,10 +152,9 @@ public class EventServiceTest {
 	    void testFindById() {
 	        when(eventRepository.findById("1")).thenReturn(Optional.of(event));
 
-	        Optional<Event> result = eventService.findById("1");
+	        Event result = eventService.findById("1");
 
-	        assertThat(result).isPresent();
-	        assertThat(result.get().getName()).isEqualTo("Tech Conference");
+	        assertThat(result.getName()).isEqualTo("Tech Conference");
 	        verify(eventRepository, times(1)).findById("1");
 	    }
 	}

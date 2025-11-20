@@ -7,6 +7,7 @@ import java.util.Optional;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -19,6 +20,8 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import com.example.eventmanagementsystem.entity.Event;
 import com.example.eventmanagementsystem.service.EventService;
 import com.example.eventmanagementsystem.service.RegistrationService;
+
+import jakarta.validation.Valid;
 
 @Controller
 @RequestMapping("/events")
@@ -82,20 +85,25 @@ public class EventController {
     }
 
     @PostMapping("/create")
-    public String createEvent(@ModelAttribute Event event) {
-        eventService.createEvent(event);
+    public String createEvent(@Valid @ModelAttribute Event event,BindingResult result) {
+    	
+    	eventService.createEvent(event);
+    	if (result.hasErrors()) {
+            return "events/create"; // your template name
+        } 
         return "redirect:/events";
     }
 
     @GetMapping("/edit/{id}")
     public String showEditForm(@PathVariable String id, Model model) {
-    	 Optional<Event> event = eventService.findById(id);
+    	
+    	 Event event = eventService.findById(id);
         model.addAttribute("event", event);
         return "events/edit";
     }
 
     @PutMapping("/edit/{id}")
-    public String updateEvent(@PathVariable String id, @ModelAttribute Event event) {
+    public String updateEvent(@PathVariable String id,@Valid @ModelAttribute Event event) {
         eventService.updateEvent(id, event);
         return "redirect:/events";
     }
@@ -109,8 +117,8 @@ public class EventController {
     public String viewEvent(@PathVariable("eventId") String eventId,
                             Model model,
                             Authentication authentication) {
-        Optional<Event> opt = eventService.findById(eventId);
-        Event event = opt.orElseThrow(() -> new RuntimeException("Not found"));
+        Event event = eventService.findById(eventId);
+        
         model.addAttribute("event", event);
         model.addAttribute("isRegistered",
                 authentication != null && registrationService.isUserRegistered(authentication.getName(), eventId));

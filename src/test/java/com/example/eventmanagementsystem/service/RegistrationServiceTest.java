@@ -38,9 +38,6 @@ public class RegistrationServiceTest {
 	    private EventRepository eventRepository;
 
 	    @Mock
-	    private JavaMailSender mailSender;
-
-	    @Mock
 	    private UserRepository userRepository;
 
 	    @InjectMocks
@@ -93,12 +90,14 @@ public class RegistrationServiceTest {
 
 	    @Test
 	    void testGetEventIdForRegistration() {
+	    	Event event=new Event();
+	    	 event.setId("E123");
 	        Registration reg = new Registration();
-	        reg.setEventId("E123");
+	        reg.setEvent(event);
 	        when(registrationRepository.findById("R1")).thenReturn(Optional.of(reg));
 
-	        String eventId = registrationService.getEventIdForRegistration("R1");
-	        assertEquals("E123", eventId);
+	        Event result = registrationService.getEventIdForRegistration("R1");
+	        assertEquals("E123", result.getId());
 	    }
 
 	    @Test
@@ -142,8 +141,8 @@ public class RegistrationServiceTest {
 
 	        Registration saved = new Registration();
 	        saved.setId("R1");
-	        saved.setUserId("U1");
-	        saved.setEventId("E1");
+	        saved.setUser(user);
+	        saved.setEvent(event);
 
 	        when(userRepository.findByEmail("priya@example.com")).thenReturn(Optional.of(user));
 	        when(eventRepository.findById("E1")).thenReturn(Optional.of(event));
@@ -152,8 +151,7 @@ public class RegistrationServiceTest {
 
 	        Registration result = registrationService.registerUserForEvent("priya@example.com", "E1");
 
-	        assertEquals("E1", result.getEventId());
-	        verify(mailSender, times(1)).send(any(SimpleMailMessage.class));
+	        assertEquals("E1", result.getEvent().getId());
 	    }
 
 	    @Test

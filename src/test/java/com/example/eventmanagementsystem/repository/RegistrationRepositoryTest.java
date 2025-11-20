@@ -10,71 +10,84 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.data.mongo.DataMongoTest;
 
+import com.example.eventmanagementsystem.entity.Event;
 import com.example.eventmanagementsystem.entity.Registration;
+import com.example.eventmanagementsystem.entity.User;
 
 @DataMongoTest
 public class RegistrationRepositoryTest {
 
-	@Autowired
+    @Autowired
     private RegistrationRepository registrationRepository;
 
     private Registration reg1;
     private Registration reg2;
-    private Registration reg3;
 
     @BeforeEach
     void setUp() {
         registrationRepository.deleteAll();
 
+        // Create Event
+        Event event1 = new Event();
+        event1.setId("E1");
+
+        Event event2 = new Event();
+        event2.setId("E2");
+
+        // Create User
+        User user1 = new User();
+        user1.setId("U1");
+
+        User user2 = new User();
+        user2.setId("U2");
+
+        // Registration 1
         reg1 = new Registration();
-        reg1.setUserId("user1");
-        reg1.setEventId("eventA");
-        reg1.setAttended(false);
-        reg1.setRegisteredAt(LocalDateTime.of(2025, 11, 1, 10, 0));
-        registrationRepository.save(reg1);
+        reg1.setId("R1");
+        reg1.setUser(user1);
+        reg1.setEvent(event1);
+        reg1.setAttended(true);
+        reg1.setAttendanceTimestamp(LocalDateTime.now());
 
+        // Registration 2
         reg2 = new Registration();
-        reg2.setUserId("user1");
-        reg2.setEventId("eventB");
-        reg2.setAttended(true);
-        reg2.setRegisteredAt(LocalDateTime.of(2025, 11, 2, 11, 0));
+        reg2.setId("R2");
+        reg2.setUser(user1);
+        reg2.setEvent(event2);
+        reg2.setAttended(false);
+
+        registrationRepository.save(reg1);
         registrationRepository.save(reg2);
-
-        reg3 = new Registration();
-        reg3.setUserId("user2");
-        reg3.setEventId("eventA");
-        reg3.setAttended(false);
-        reg3.setRegisteredAt(LocalDateTime.of(2025, 11, 3, 12, 0));
-        registrationRepository.save(reg3);
     }
 
+    // ✔️ Test findByUserId()
     @Test
-    void whenFindByUserId_thenReturnAllRegistrationsForThatUser() {
-        List<Registration> results = registrationRepository.findByUserId("user1");
+    void testFindByUserId() {
+        List<Registration> list = registrationRepository.findByUserId("U1");
 
-        assertThat(results).hasSize(2)
-                           .extracting(Registration::getEventId)
-                           .containsExactlyInAnyOrder("eventA", "eventB");
+        assertThat(list).hasSize(2);
+        assertThat(list).extracting(r -> r.getId())
+                .containsExactlyInAnyOrder("R1", "R2");
     }
 
+    // ✔️ Test findByEventId()
     @Test
-    void whenFindByEventId_thenReturnAllRegistrationsForThatEvent() {
-        List<Registration> results = registrationRepository.findByEventId("eventA");
+    void testFindByEventId() {
+        List<Registration> list = registrationRepository.findByEventId("E1");
 
-        assertThat(results).hasSize(2)
-                           .extracting(Registration::getUserId)
-                           .containsExactlyInAnyOrder("user1", "user2");
+        assertThat(list).hasSize(1);
+        assertThat(list.get(0).getId()).isEqualTo("R1");
     }
 
+    // ✔️ existsByUserIdAndEventId()
     @Test
-    void whenExistsByUserIdAndEventId_thenReturnTrueForMatchingPair() {
-        boolean exists = registrationRepository.existsByUserIdAndEventId("user1", "eventA");
+    void testExistsByUserIdAndEventId() {
+        boolean exists = registrationRepository.existsByUserIdAndEventId("U1", "E1");
+
         assertThat(exists).isTrue();
-    }
 
-    @Test
-    void whenExistsByUserIdAndEventId_thenReturnFalseForNonMatchingPair() {
-        boolean exists = registrationRepository.existsByUserIdAndEventId("user2", "eventB");
-        assertThat(exists).isFalse();
+        boolean notExists = registrationRepository.existsByUserIdAndEventId("U2", "E1");
+
+        assertThat(notExists).isFalse();
     }
 }

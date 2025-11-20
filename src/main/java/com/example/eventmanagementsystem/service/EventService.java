@@ -11,8 +11,6 @@ import com.example.eventmanagementsystem.entity.Event;
 import com.example.eventmanagementsystem.entity.User;
 import com.example.eventmanagementsystem.repository.EventRepository;
 
-import jakarta.persistence.EntityNotFoundException;
-
 @Service
 public class EventService {
 	
@@ -55,8 +53,12 @@ public class EventService {
         return eventRepository.findByDateTimeBetween(start, end);
     }
     
-    public Optional<Event> findById(String id) {
-    	return eventRepository.findById(id);
+    public Event findById(String id) {
+    	 Event event=eventRepository.findById(id)
+    	 .orElseThrow(() -> new RuntimeException("Event not found"));
+		return event;
+		
+	
  
     }
 	

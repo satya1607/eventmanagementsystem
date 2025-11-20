@@ -11,6 +11,8 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.example.eventmanagementsystem.service.RegistrationService;
 
+import jakarta.validation.Valid;
+
 @Controller
 @RequestMapping("/registrations")
 public class RegistrationController {
@@ -32,8 +34,8 @@ public class RegistrationController {
         return "registrations/confirmation";
     }
 
-    @GetMapping("/my/{userId}")
-    public String myRegistrations(@PathVariable("userId") String userId,Model model) {
+    @GetMapping("/my/{id}")
+    public String myRegistrations(@PathVariable("id") String userId,Model model) {
         model.addAttribute("regs", registrationService.getRegistrationsForUser(userId));
         return "registrations/list";
     }

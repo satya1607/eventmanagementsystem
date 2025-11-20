@@ -17,6 +17,8 @@ import com.example.eventmanagementsystem.entity.Registration;
 import com.example.eventmanagementsystem.service.EventService;
 import com.example.eventmanagementsystem.service.RegistrationService;
 
+import jakarta.validation.Valid;
+
 @Controller
 @RequestMapping("/admin/events")
 public class AttendanceController {
@@ -34,7 +36,7 @@ public class AttendanceController {
     public String showAttendanceForm(@PathVariable String id, Model model) {
     	
     	System.out.println("Show attendance for eventId: " + id);
-    	Optional<Event> event = eventService.findById(id);
+    	Event event = eventService.findById(id);
     	  System.out.println("event:"+event);
         model.addAttribute("event", event);
         List<Registration> regs = registrationService.findByEventId(id);
@@ -53,7 +55,9 @@ public class AttendanceController {
         } catch (Exception e) {
             redirectAttributes.addFlashAttribute("errorMessage", "Error updating attendance: " + e.getMessage());
         }
-        return "redirect:/admin/events/attendance/" + registrationService.getEventIdForRegistration(registrationId);
+        Event event = registrationService.getEventIdForRegistration(registrationId);
+        return "redirect:/admin/events/attendance/" + event.getId();
+
     }
     
 }

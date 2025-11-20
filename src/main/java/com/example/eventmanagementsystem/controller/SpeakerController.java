@@ -3,6 +3,7 @@ package com.example.eventmanagementsystem.controller;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -12,6 +13,8 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.example.eventmanagementsystem.entity.Speaker;
 import com.example.eventmanagementsystem.repository.SpeakerRepository;
+
+import jakarta.validation.Valid;
 
 @Controller
 @RequestMapping("/admin/speakers")
@@ -35,9 +38,14 @@ public class SpeakerController {
 
 	    // ✅ Save new speaker
 	    @PostMapping("/save")
-	    public String saveSpeaker(@ModelAttribute Speaker speaker, RedirectAttributes redirectAttributes) {
-	        speakerRepository.save(speaker);
+	    public String saveSpeaker(@Valid @ModelAttribute Speaker speaker,BindingResult result, RedirectAttributes redirectAttributes) {
+	        
+	    	if (result.hasErrors()) {
+	            return "admin/speakers/form"; // your template name
+	        } 
+	    	speakerRepository.save(speaker);
 	        redirectAttributes.addFlashAttribute("successMessage", "Speaker saved successfully!");
+	        
 	        return "redirect:/admin/speakers";
 	    }
 

@@ -60,31 +60,41 @@ public class AuthControllerTest {
 
     @Test
     void registerUser_success_redirectsToLoginRegistered() throws Exception {
-        when(userService.registerNewUser(any(User.class))).thenReturn(user);
+    	 User mockUser = new User();
+    	    mockUser.setId("1");
+    	    mockUser.setEmail("john@example.com");
+    	    mockUser.setPassword("12345");
+    	    mockUser.setRole(UserRole.USER);
 
-        mockMvc.perform(post("/register")
-               .contentType(MediaType.APPLICATION_FORM_URLENCODED)
-               .param("email", "test@example.com")
-               .param("username", "Test User")
-               .param("password", "plainPwd"))
-               .andExpect(status().is3xxRedirection())
-               .andExpect(redirectedUrl("/login?registered"));
+    	    // Correct mocking for non-void method
+    	    when(userService.registerNewUser(any(User.class))).thenReturn(mockUser);
+
+    	    mockMvc.perform(post("/register")
+    	            .param("username", "John")
+    	            .param("email", "john@example.com")
+    	            .param("password", "12345")
+    	            .param("role", "USER")
+    	    )
+    	    .andExpect(status().is3xxRedirection())
+    	    .andExpect(redirectedUrl("/login?registered"));
     }
 
     @Test
     void registerUser_emailAlreadyExists_returnsRegisterViewWithError() throws Exception {
-        doThrow(new RuntimeException("Email already in use")).when(userService).registerNewUser(any(User.class));
+    	doThrow(new RuntimeException("Email already exists"))
+        .when(userService).registerNewUser(any(User.class));
 
-        mockMvc.perform(post("/register")
-        		.with(csrf())
-               .contentType(MediaType.APPLICATION_FORM_URLENCODED)
-               .param("email", "test@example.com")
-               .param("username", "Test User")
-               .param("password", "plainPwd"))
-               .andExpect(status().isOk())
-               .andExpect(view().name("register"))
-               .andExpect(model().attributeExists("error"));
-    }
+         mockMvc.perform(post("/register")
+        .param("username", "John")
+        .param("email", "john@example.com")
+        .param("password", "12345")
+        .param("role", "USER")  
+          )
+        .andExpect(status().isOk())
+        .andExpect(view().name("register"))
+        .andExpect(model().attributeExists("error"))
+        .andExpect(model().attribute("error", "Email already exists"));
+}
 
     @Test
     void loginPage_returnsLoginView() throws Exception {

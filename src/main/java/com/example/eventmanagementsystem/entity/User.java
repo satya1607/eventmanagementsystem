@@ -10,13 +10,27 @@ import org.springframework.data.mongodb.core.mapping.DocumentReference;
 
 import com.example.eventmanagementsystem.enums.UserRole;
 
+import jakarta.validation.constraints.Email;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Size;
+
 @Document(collection="User")
 public class User {
+	
 	@Id
     private String id;
+	
     private String username;
+	
+	@NotBlank(message = "Email cannot be empty")
     private String email;
+	
+	@NotBlank(message = "Password cannot be empty")
+	@Size(min = 5, message = "Password must be at least 6 characters long")
     private String password;
+	
+	@NotNull(message = "User role is required")
     private UserRole role; // e.g., "ROLE_USER" or "ROLE_ADMIN"
 
     // getters & setters

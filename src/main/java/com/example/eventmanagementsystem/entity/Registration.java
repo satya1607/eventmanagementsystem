@@ -3,19 +3,37 @@ package com.example.eventmanagementsystem.entity;
 import java.time.LocalDateTime;
 
 import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.mapping.DBRef;
 import org.springframework.data.mongodb.core.mapping.Document;
 
-@Document(collection = "registrations")
+import jakarta.validation.constraints.Email;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.PastOrPresent;
+
+@Document(collection = "Registration")
 public class Registration {
 
     @Id
     private String id;
-
-    private String userId;      // reference to User document ID
-    private String eventId;     // reference to Event document ID
-
-    private String userEmail;   // for quick display without extra query
+    
+    @DBRef
+    private User user; 
+    
+    @DBRef
+    private Event event;
+    
+    @NotBlank(message = "User email is required")
+    private String userEmail;
+    
+    @NotNull(message = "Registration timestamp is required")
+    @PastOrPresent(message = "Registration date must be in the present or past")
     private LocalDateTime registeredAt;
+    
+    private boolean attended;
+    
+	@PastOrPresent(message = "Attendance timestamp must be in the past or present")
+    private LocalDateTime attendanceTimestamp;
     
     public String getUserEmail() {
 		return userEmail;
@@ -32,18 +50,8 @@ public class Registration {
 	public void setRegisteredAt(LocalDateTime registeredAt) {
 		this.registeredAt = registeredAt;
 	}
-	private boolean attended;
-    private LocalDateTime attendanceTimestamp;
-
-    // Constructors, getters + setters
-
+	
     public Registration() {}
-
-    public Registration(String userId, String eventId) {
-        this.userId = userId;
-        this.eventId = eventId;
-        this.attended = false;
-    }
 
     public String getId() {
         return id;
@@ -52,21 +60,23 @@ public class Registration {
         this.id = id;
     }
 
-    public String getUserId() {
-        return userId;
-    }
-    public void setUserId(String userId) {
-        this.userId = userId;
-    }
+    public User getUser() {
+		return user;
+	}
 
-    public String getEventId() {
-        return eventId;
-    }
-    public void setEventId(String eventId) {
-        this.eventId = eventId;
-    }
+	public void setUser(User user) {
+		this.user = user;
+	}
 
-    public boolean isAttended() {
+	public Event getEvent() {
+		return event;
+	}
+
+	public void setEvent(Event event) {
+		this.event = event;
+	}
+
+	public boolean isAttended() {
         return attended;
     }
     public void setAttended(boolean attended) {

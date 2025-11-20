@@ -24,8 +24,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.csrf;
 
 @WebMvcTest(SpeakerController.class)
-
-class SpeakerControllerTest {
+public class SpeakerControllerTest {
 
     @Autowired
     private MockMvc mockMvc;

@@ -42,14 +42,10 @@
     <!-- Left Corner: Brand / Heading -->
     <a href="/" class="brand">EventManagement</a>
 
-    <!-- Right Corner: Login & Signup -->
     <div class="nav-links">
-        <!-- Using Thymeleaf 'th:href' to generate dynamic URLs -->
         
         <a th:href="@{/events/create}">Create Event</a>
         
-        
-        <!-- <a th:href="@{/admin/events/attendance/{eventId}(eventId=${event.id})}">Track Attendance</a>-->
          <a th:href="@{/admin/speakers/create}">Manage Speakers</a>
         <a th:href="@{/login}">Login</a>
         <a th:href="@{/register}">SignUp</a>
